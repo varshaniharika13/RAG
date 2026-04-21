@@ -1,4 +1,3 @@
-# Baseline dependencies for upcoming Phase 1 implementation
 fastapi
 uvicorn
 pydantic

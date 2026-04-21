@@ -1,100 +1,101 @@
 # Campus Policy Assistant (RAG)
 
-A retrieval-augmented generation (RAG) project that answers university policy questions with grounded citations.
+A deployable, testable retrieval-augmented generation (RAG) starter for university-policy Q&A with grounded citations and safe refusal behavior.
 
-## Phase status
-- ✅ **Phase 0 complete**: project framing, domain selection, corpus definition, user stories, success criteria, architecture, and repo structure.
-- 🚧 **Phase 1 next**: build baseline ingestion/retrieval/generation pipeline end-to-end.
+## What this now includes (Phase 5)
 
-## Domain
-This project targets **university policy documents** (handbooks, registrar policy pages, conduct procedures, aid and enrollment policies).
+- ✅ **Config-driven pipeline** (`app/config/settings.yaml`) for chunking, retrieval, generation, and evaluation thresholds.
+- ✅ **Prompt versioning** in `prompts/` with answer/refusal prompt files.
+- ✅ **Observability logging** (retrieved chunks, latency, scores, citation presence, refusal reasons).
+- ✅ **Evaluation gate** that fails when quality drops below threshold.
+- ✅ **CI workflow** running tests + evaluation on GitHub Actions.
+- ✅ **Automated tests** for chunking, metadata extraction, retrieval shape, citation format, and refusal logic.
 
-## Core user stories
-- As a user, I want to ask a policy question and get a grounded answer.
-- As a user, I want exact citations (document/page/chunk references).
-- As a user, I want abstention (“I don’t know”) when evidence is insufficient.
-- As a developer, I want stable evaluation metrics to catch regressions.
+## Architecture (current)
 
-## Success criteria
-- Grounded, citation-backed answers.
-- Strong top-k retrieval recall on eval questions.
-- Reliable abstention on unsupported queries.
-- Reproducible ingestion and indexing.
-
-## Architecture (baseline)
 ```mermaid
 flowchart TD
-    A[Raw Documents\nPDF / Markdown / TXT / Web] --> B[Ingestion Pipeline]
-    B --> C[Cleaning + Normalization]
-    C --> D[Chunking\n500-800 tokens\n80-120 overlap]
-    D --> E[Embeddings]
-    E --> F[(Chroma Vector Store)]
-
-    U[User Question] --> Q[Query Embedding]
-    Q --> F
-    F --> R[Top-k Retrieval\nk=5]
-    R --> P[Prompt Builder\nquestion + chunks + citation rules]
-    P --> L[LLM Generation]
-    L --> O[Structured Response\nanswer + citations + supported]
-
-    O --> API[/ask endpoint]
-    O --> UI[Basic UI]
-    O --> EV[Evaluation Harness]
+    A[Documents] --> B[Chunking + Metadata]
+    B --> C[Hybrid Retriever BM25-like]
+    C --> D[Grounded Generator]
+    D --> E[Response + Citations / Refusal]
+    E --> F[Observability Logs]
+    E --> G[Evaluation Harness]
 ```
 
-## Planned response schema
-```json
-{
-  "answer": "...",
-  "citations": [
-    {"doc": "policy.pdf", "page": 4, "chunk_id": "c17"}
-  ],
-  "supported": true
-}
+## Quick start
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+pytest -q
+python -m app.evaluation.evaluate
 ```
 
-## Repository structure
-```text
-rag-project/
-│
-├── app/
-│   ├── api/
-│   ├── ingestion/
-│   ├── retrieval/
-│   ├── generation/
-│   ├── evaluation/
-│   ├── config/
-│   └── utils/
-│
-├── data/
-│   ├── raw/
-│   ├── processed/
-│   └── eval/
-│
-├── notebooks/
-├── tests/
-├── scripts/
-├── prompts/
-├── .github/workflows/
-├── requirements.txt
-└── README.md
+## Configuration
+
+Central settings are in:
+
+- `app/config/settings.yaml`
+
+Key options include:
+
+- `chunking.chunk_size`, `chunking.chunk_overlap`
+- `retrieval.top_k`, `retrieval.min_score_to_answer`
+- `generation.answer_model`, `generation.refusal_model`
+- `evaluation.quality_threshold`
+
+## Prompt versioning
+
+Prompt artifacts:
+
+- `prompts/answer_prompt_v1.txt`
+- `prompts/answer_prompt_v2.txt`
+- `prompts/refusal_prompt_v1.txt`
+
+You can pin prompt versions in `settings.yaml`.
+
+## Evaluation gate
+
+Run:
+
+```bash
+python -m app.evaluation.evaluate
 ```
 
-## Key project artifacts
-- Project proposal: `docs/project_proposal.md`
-- Corpus manifest (15 docs): `data/raw/corpus_manifest.csv`
+This returns a non-zero exit code when score < `evaluation.quality_threshold`, enabling CI failure on regressions.
 
-## Phase 1 implementation plan
-1. **Ingestion**: load PDF/MD/TXT/web and normalize into a canonical document schema.
-2. **Chunking**: chunk with metadata (doc_id, page, heading, start/end offsets, source path/url).
-3. **Embeddings + Chroma**: embed chunks and persist vectors with metadata.
-4. **Retrieval**: embed query and return top-k relevant chunks.
-5. **Generation**: prompt model to answer from context only and cite supporting chunks.
-6. **API/UI**: provide `/ask` endpoint and a minimal interface.
-7. **Evaluation**: add groundedness/citation/abstention metrics.
+## CI
 
-## Professor checkpoint answers
-- **What documents am I supporting?** University policy handbooks and policy webpages in the corpus manifest.
-- **Who is this system for?** Students and advisors.
-- **What does “good” mean?** Correct, grounded answers with trustworthy citations and safe abstention.
-- **What does failure look like?** Hallucinated claims, missing/wrong citations, overconfident unsupported answers.
+GitHub Actions workflow:
+
+- `.github/workflows/ci.yml`
+
+Pipeline steps:
+1. install dependencies
+2. run `pytest -q`
+3. run `python -m app.evaluation.evaluate`
+
+## Tests
+
+Current test coverage includes:
+
+- chunk windowing and overlap behavior
+- metadata extraction from markdown-like headings
+- retrieval result shape and ranking sanity
+- citation dictionary formatting
+- refusal behavior when support score is weak
+- evaluation pass/fail threshold behavior
+
+## Next stretch goals (Phase 6)
+
+Recommended order after this baseline remains stable:
+
+1. multi-document comparison answers
+2. conversational memory with grounded follow-up
+3. failed-query admin dashboard
+4. stale-source warning
+5. OCR fallback for noisy PDFs
+6. LangGraph stateful orchestration (`ingest -> retrieve -> rerank -> validate -> generate -> verify -> refuse/return`)
+
