@@ -1,0 +1,11 @@
+{
+  "summary": {
+    "faithfulness": 0.907,
+    "context_recall": 0.8158,
+    "context_precision": 0.8042,
+    "answer_relevance": 0.8856,
+    "citation_correctness": 0.9142,
+    "unsupported_refusal_correct": 0.8656
+  },
+  "count": 50
+}

@@ -1,11 +1,19 @@
-# Baseline dependencies for upcoming Phase 1 implementation
+# Core app
 fastapi
 uvicorn
 pydantic
+python-dotenv
+
+# Retrieval and indexing
 chromadb
 sentence-transformers
+rank-bm25
+numpy
+
+# Ingestion
 pypdf
 beautifulsoup4
 markdown
-python-dotenv
+
+# Evaluation and testing
 pytest
