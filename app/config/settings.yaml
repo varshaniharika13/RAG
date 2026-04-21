@@ -1,0 +1,23 @@
+chunking:
+  chunk_size: 600
+  chunk_overlap: 100
+retrieval:
+  top_k: 5
+  min_score_to_answer: 0.4
+  bm25_k1: 1.5
+  bm25_b: 0.75
+generation:
+  answer_model: "gpt-4.1-mini"
+  refusal_model: "gpt-4.1-mini"
+  answer_prompt_version: "v2"
+  refusal_prompt_version: "v1"
+evaluation:
+  sample_path: "data/eval/sample_eval.json"
+  quality_threshold: 0.75
+observability:
+  log_level: "INFO"
+  include_retrieved_chunks: true
+  include_latency_ms: true
+  include_scores: true
+  include_citation_presence: true
+  include_refusal_reasons: true

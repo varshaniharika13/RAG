@@ -1,0 +1,26 @@
+[
+  {
+    "id": "q1",
+    "question": "What happens if tuition is unpaid after deadline?",
+    "expected_supported": true,
+    "doc": {
+      "doc_id": "billing_policy",
+      "title": "Billing Policy",
+      "source": "billing.md",
+      "page": 1,
+      "text": "# Billing Policy Students must pay tuition by the posted deadline. Accounts with unpaid balances may receive a late fee and registration hold."
+    }
+  },
+  {
+    "id": "q2",
+    "question": "What are dorm pet rules for exotic animals?",
+    "expected_supported": false,
+    "doc": {
+      "doc_id": "library_policy",
+      "title": "Library Noise Policy",
+      "source": "library.md",
+      "page": 2,
+      "text": "# Library Noise Policy Quiet floors require silent study. Phone calls are allowed only in lobby zones."
+    }
+  }
+]
