@@ -4,42 +4,37 @@ A retrieval-augmented generation (RAG) project that answers university policy qu
 
 ## Phase status
 - ✅ **Phase 0 complete**: project framing, domain selection, corpus definition, user stories, success criteria, architecture, and repo structure.
-- 🚧 **Phase 1 next**: build baseline ingestion/retrieval/generation pipeline end-to-end.
+- ✅ **Phase 2 complete**: hybrid dense+keyword retrieval, reranking, metadata filtering, chunking experiments, and query rewriting.
+- ✅ **Phase 3 complete**: citation-enforced generation, unsupported refusal logic, citation validation, and confidence gating.
+- ✅ **Phase 4 scaffold complete**: golden dataset, evaluation runner, experiment logging, and regression report outputs.
 
-## Domain
-This project targets **university policy documents** (handbooks, registrar policy pages, conduct procedures, aid and enrollment policies).
+## Retrieval upgrades (Phase 2)
+- **Hybrid retrieval**: combines dense Chroma similarity and sparse BM25 scores (`app/retrieval/hybrid.py`).
+- **Reranking**: cross-encoder reranker rescoring top-20 candidates and selecting top-5 (`app/retrieval/rerank.py`).
+- **Metadata filtering**: supports filters for document type, category, source, and date range (`app/types.py`).
+- **Chunking strategies**: fixed, heading-aware, and recursive chunking (`app/retrieval/chunking.py`).
+- **Query rewriting**: acronym expansion and policy-term normalization (`app/retrieval/query_rewrite.py`).
 
-## Core user stories
-- As a user, I want to ask a policy question and get a grounded answer.
-- As a user, I want exact citations (document/page/chunk references).
-- As a user, I want abstention (“I don’t know”) when evidence is insufficient.
-- As a developer, I want stable evaluation metrics to catch regressions.
+## Grounding and citation discipline (Phase 3)
+- Prompt enforces evidence-backed claims and chunk-level citations (`app/generation/grounded_answer.py`).
+- Unsupported queries return refusal text when confidence/support is weak.
+- Citation validator checks citation existence and mapping to retrieved chunks (`app/generation/citation_validator.py`).
+- Confidence logic combines retrieval + rerank thresholds (`app/retrieval/pipeline.py`).
 
-## Success criteria
-- Grounded, citation-backed answers.
-- Strong top-k retrieval recall on eval questions.
-- Reliable abstention on unsupported queries.
-- Reproducible ingestion and indexing.
+## Evaluation system (Phase 4)
+- Golden dataset (50 samples): `data/eval/golden_dataset.jsonl`.
+- Evaluation runner: `scripts/run_eval.py` (writes JSON+CSV reports under `reports/`).
+- Metrics module for faithfulness/recall/precision/relevance/citation/refusal: `app/evaluation/metrics.py`.
+- Retrieval experiment notebook: `notebooks/retrieval_experiments.ipynb`.
+- Comparison report: `reports/retrieval_comparison.md`.
+- Experiment logging utility: `app/evaluation/experiment_logger.py`.
 
-## Architecture (baseline)
-```mermaid
-flowchart TD
-    A[Raw Documents\nPDF / Markdown / TXT / Web] --> B[Ingestion Pipeline]
-    B --> C[Cleaning + Normalization]
-    C --> D[Chunking\n500-800 tokens\n80-120 overlap]
-    D --> E[Embeddings]
-    E --> F[(Chroma Vector Store)]
-
-    U[User Question] --> Q[Query Embedding]
-    Q --> F
-    F --> R[Top-k Retrieval\nk=5]
-    R --> P[Prompt Builder\nquestion + chunks + citation rules]
-    P --> L[LLM Generation]
-    L --> O[Structured Response\nanswer + citations + supported]
-
-    O --> API[/ask endpoint]
-    O --> UI[Basic UI]
-    O --> EV[Evaluation Harness]
+## Quickstart
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python scripts/run_eval.py
 ```
 
 ## Planned response schema
@@ -49,52 +44,7 @@ flowchart TD
   "citations": [
     {"doc": "policy.pdf", "page": 4, "chunk_id": "c17"}
   ],
-  "supported": true
+  "supported": true,
+  "confidence": 0.82
 }
 ```
-
-## Repository structure
-```text
-rag-project/
-│
-├── app/
-│   ├── api/
-│   ├── ingestion/
-│   ├── retrieval/
-│   ├── generation/
-│   ├── evaluation/
-│   ├── config/
-│   └── utils/
-│
-├── data/
-│   ├── raw/
-│   ├── processed/
-│   └── eval/
-│
-├── notebooks/
-├── tests/
-├── scripts/
-├── prompts/
-├── .github/workflows/
-├── requirements.txt
-└── README.md
-```
-
-## Key project artifacts
-- Project proposal: `docs/project_proposal.md`
-- Corpus manifest (15 docs): `data/raw/corpus_manifest.csv`
-
-## Phase 1 implementation plan
-1. **Ingestion**: load PDF/MD/TXT/web and normalize into a canonical document schema.
-2. **Chunking**: chunk with metadata (doc_id, page, heading, start/end offsets, source path/url).
-3. **Embeddings + Chroma**: embed chunks and persist vectors with metadata.
-4. **Retrieval**: embed query and return top-k relevant chunks.
-5. **Generation**: prompt model to answer from context only and cite supporting chunks.
-6. **API/UI**: provide `/ask` endpoint and a minimal interface.
-7. **Evaluation**: add groundedness/citation/abstention metrics.
-
-## Professor checkpoint answers
-- **What documents am I supporting?** University policy handbooks and policy webpages in the corpus manifest.
-- **Who is this system for?** Students and advisors.
-- **What does “good” mean?** Correct, grounded answers with trustworthy citations and safe abstention.
-- **What does failure look like?** Hallucinated claims, missing/wrong citations, overconfident unsupported answers.
