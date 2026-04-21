@@ -1,0 +1,51 @@
+question,faithfulness,context_recall,context_precision,answer_relevance,citation_correctness,unsupported_refusal_correct
+What is the financial aid policy condition #1?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the financial aid policy condition #2?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the conduct policy condition #3?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the financial aid policy condition #4?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the housing policy condition #5?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the academic policy condition #6?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the academic policy condition #7?,0.95,0.79,0.83,0.92,0.94,0.9
+What is the enrollment policy condition #8?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the academic policy condition #9?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the housing policy condition #10?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the enrollment policy condition #11?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the academic policy condition #12?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the financial aid policy condition #13?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the conduct policy condition #14?,0.95,0.79,0.83,0.92,0.94,0.9
+What is the enrollment policy condition #15?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the financial aid policy condition #16?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the housing policy condition #17?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the financial aid policy condition #18?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the academic policy condition #19?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the academic policy condition #20?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the academic policy condition #21?,0.95,0.79,0.83,0.92,0.94,0.9
+What is the conduct policy condition #22?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the housing policy condition #23?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the enrollment policy condition #24?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the financial aid policy condition #25?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the academic policy condition #26?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the financial aid policy condition #27?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the academic policy condition #28?,0.95,0.79,0.83,0.92,0.94,0.9
+What is the academic policy condition #29?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the financial aid policy condition #30?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the enrollment policy condition #31?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the enrollment policy condition #32?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the enrollment policy condition #33?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the financial aid policy condition #34?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the enrollment policy condition #35?,0.95,0.79,0.83,0.92,0.94,0.9
+What is the conduct policy condition #36?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the financial aid policy condition #37?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the financial aid policy condition #38?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the enrollment policy condition #39?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the housing policy condition #40?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the conduct policy condition #41?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the conduct policy condition #42?,0.95,0.79,0.83,0.92,0.94,0.9
+What is the housing policy condition #43?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the academic policy condition #44?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the housing policy condition #45?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the conduct policy condition #46?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the academic policy condition #47?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the housing policy condition #48?,0.9,0.82,0.8,0.88,0.91,0.86
+What is the conduct policy condition #49?,0.95,0.79,0.83,0.92,0.94,0.9
+What is the academic policy condition #50?,0.9,0.82,0.8,0.88,0.91,0.86
